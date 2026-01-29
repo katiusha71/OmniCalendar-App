@@ -1,0 +1,44 @@
+name: omni_calendar
+description: Multi-platform calendar application supporting Gregorian, Solar Hijri, and Lunar Hijri calendars.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.4.9
+  riverpod_annotation: ^2.3.3
+
+  # HTTP Client
+  dio: ^5.4.0
+
+  # Calendar Libraries
+  shamsi_date: ^1.0.2
+  hijri: ^3.0.0
+
+  # Secure Storage
+  flutter_secure_storage: ^9.0.0
+
+  # Navigation
+  go_router: ^13.0.1
+
+  # Internationalization
+  intl: ^0.18.1
+
+  # UI Components
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+  riverpod_generator: ^2.3.9
+  build_runner: ^2.4.7
+
+flutter:
+  uses-material-design: true
