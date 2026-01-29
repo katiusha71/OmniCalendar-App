@@ -1,0 +1,111 @@
+# ==================== #
+#       GENERAL        #
+# ==================== #
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*.temp
+*.swp
+*~
+
+# ==================== #
+#         IDE          #
+# ==================== #
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.project
+.classpath
+.settings/
+
+# ==================== #
+#    JAVA / MAVEN      #
+# ==================== #
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+
+# ==================== #
+#     SPRING BOOT      #
+# ==================== #
+application.yml
+application.properties
+application-*.yml
+application-*.properties
+!application.yml.example
+!application.properties.example
+
+# Firebase credentials
+**/firebase-service-account.json
+**/firebase-adminsdk*.json
+**/serviceAccountKey.json
+
+# ==================== #
+#   FLUTTER / DART     #
+# ==================== #
+**/build/
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/.pub-cache/
+**/.pub/
+**/doc/api/
+**/*.g.dart
+**/*.freezed.dart
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/.gradle/
+**/android/local.properties
+**/*.jks
+**/*.keystore
+
+# iOS
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/.ios/
+
+# Web build output
+**/web/build/
+
+# ==================== #
+#      SECRETS         #
+# ==================== #
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials/
+
+# ==================== #
+#       MISC           #
+# ==================== #
+node_modules/
+coverage/
+*.lock
+!pubspec.lock
