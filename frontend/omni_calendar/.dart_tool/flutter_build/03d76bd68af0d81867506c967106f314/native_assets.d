@@ -1,1 +1,0 @@
- C:\\Users\\shevc\\OmniCalendar\\frontend\\omni_calendar\\.dart_tool\\flutter_build\\03d76bd68af0d81867506c967106f314\\native_assets.yaml: 
