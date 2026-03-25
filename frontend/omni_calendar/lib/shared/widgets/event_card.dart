@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
+import '../../core/l10n/app_localizations.dart';
+import '../../core/services/ics_export_service.dart';
 import '../../models/event.dart';
 
-class EventCard extends StatelessWidget {
+class EventCard extends ConsumerWidget {
   final Event event;
   final VoidCallback? onTap;
   final VoidCallback? onDelete;
@@ -37,9 +40,10 @@ class EventCard extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    final calendarColor = _getCalendarColor(event.calendarType);
+    final l10n = ref.watch(localizationProvider);
+    final categoryColor = event.category.color;
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -51,7 +55,7 @@ class EventCard extends StatelessWidget {
           children: [
             Container(
               height: 4,
-              color: calendarColor,
+              color: categoryColor,
             ),
             Padding(
               padding: const EdgeInsets.all(16),
@@ -65,11 +69,86 @@ class EventCard extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              event.title,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                              ),
+                            Row(
+                              children: [
+                                Icon(
+                                  event.category.icon,
+                                  size: 18,
+                                  color: categoryColor,
+                                ),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: Text(
+                                    event.title,
+                                    style: theme.textTheme.titleMedium?.copyWith(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                if (event.isHoliday) ...[
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red.withValues(alpha: 0.12),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.event_busy,
+                                          size: 12,
+                                          color: Colors.red,
+                                        ),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          l10n.get('holiday'),
+                                          style: theme.textTheme.labelSmall?.copyWith(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ] else if (event.isPreloaded) ...[
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 6,
+                                      vertical: 2,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.amber.withValues(alpha: 0.15),
+                                      borderRadius: BorderRadius.circular(4),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Icon(
+                                          Icons.star,
+                                          size: 12,
+                                          color: Colors.amber[700],
+                                        ),
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          l10n.get('holiday'),
+                                          style: theme.textTheme.labelSmall?.copyWith(
+                                            color: Colors.amber[700],
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ],
                             ),
                             if (event.description != null &&
                                 event.description!.isNotEmpty) ...[
@@ -86,15 +165,27 @@ class EventCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      if (onDelete != null)
-                        IconButton(
-                          icon: Icon(
-                            Icons.delete_outline,
-                            color: theme.colorScheme.error,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.ios_share, size: 20),
+                            onPressed: () => IcsExportService.shareEvent(event),
+                            tooltip: l10n.get('share'),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
                           ),
-                          onPressed: onDelete,
-                          tooltip: 'Delete event',
-                        ),
+                          if (onDelete != null)
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: theme.colorScheme.error,
+                              ),
+                              onPressed: onDelete,
+                              tooltip: l10n.get('delete'),
+                            ),
+                        ],
+                      ),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -106,7 +197,7 @@ class EventCard extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: calendarColor.withOpacity(0.1),
+                          color: _getCalendarColor(event.calendarType).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Row(
@@ -115,13 +206,13 @@ class EventCard extends StatelessWidget {
                             Icon(
                               _getCalendarIcon(event.calendarType),
                               size: 16,
-                              color: calendarColor,
+                              color: _getCalendarColor(event.calendarType),
                             ),
                             const SizedBox(width: 4),
                             Text(
                               event.calendarType.displayName.split(' ').first,
                               style: theme.textTheme.labelSmall?.copyWith(
-                                color: calendarColor,
+                                color: _getCalendarColor(event.calendarType),
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -150,7 +241,7 @@ class EventCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'Annual',
+                          l10n.get('annual'),
                           style: theme.textTheme.bodySmall?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -158,31 +249,29 @@ class EventCard extends StatelessWidget {
                       ],
                     ],
                   ),
-                  if (event.nextGregorianDate != null) ...[
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.schedule,
-                          size: 16,
-                          color: theme.colorScheme.primary,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          'Next: ${_formatGregorianDate(event.nextGregorianDate!)}',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.primary,
-                            fontWeight: FontWeight.w500,
+                  if (_hasTriCalendarData()) ...[
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l10n.get('celebrations'),
+                            style: theme.textTheme.labelMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          _getDaysUntil(event.nextGregorianDate!),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: theme.colorScheme.tertiary,
-                          ),
-                        ),
-                      ],
+                          const SizedBox(height: 8),
+                          ...CalendarType.values.map((type) =>
+                            _buildCelebrationRow(context, type)),
+                        ],
+                      ),
                     ),
                   ],
                   if (event.notifyDaysBefore > 0) ...[
@@ -213,9 +302,88 @@ class EventCard extends StatelessWidget {
     );
   }
 
-  String _formatGregorianDate(DateTime date) {
-    final months = AppConstants.gregorianMonths;
-    return '${date.day} ${months[date.month - 1]} ${date.year}';
+  bool _hasTriCalendarData() {
+    return event.gregorianDay != null &&
+        event.solarHijriDay != null &&
+        event.lunarHijriDay != null;
+  }
+
+  Widget _buildCelebrationRow(BuildContext context, CalendarType type) {
+    final theme = Theme.of(context);
+    final color = _getCalendarColor(type);
+    final icon = _getCalendarIcon(type);
+    final dateStr = event.getFormattedDate(type);
+    final nextDate = event.getNextDate(type);
+    final isPrimary = type == event.calendarType;
+
+    String calLabel;
+    switch (type) {
+      case CalendarType.gregorian:
+        calLabel = 'Gregorian';
+        break;
+      case CalendarType.solarHijri:
+        calLabel = 'Solar Hijri';
+        break;
+      case CalendarType.lunarHijri:
+        calLabel = 'Lunar Hijri';
+        break;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Row(
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Icon(icon, size: 16, color: color),
+          const SizedBox(width: 6),
+          Text(
+            calLabel,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: color,
+              fontWeight: isPrimary ? FontWeight.w600 : FontWeight.w500,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              dateStr,
+              style: theme.textTheme.bodySmall?.copyWith(
+                fontWeight: isPrimary ? FontWeight.w600 : FontWeight.w400,
+              ),
+            ),
+          ),
+          if (nextDate != null) ...[
+            Text(
+              _formatShortDate(nextDate),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(width: 6),
+            Text(
+              _getDaysUntil(nextDate),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: theme.colorScheme.tertiary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  String _formatShortDate(DateTime date) {
+    const months = AppConstants.gregorianMonths;
+    return '${date.day} ${months[date.month - 1].substring(0, 3)}';
   }
 
   String _getDaysUntil(DateTime date) {
@@ -226,9 +394,9 @@ class EventCard extends StatelessWidget {
 
     if (difference == 0) return '(Today)';
     if (difference == 1) return '(Tomorrow)';
-    if (difference < 0) return '(${-difference} days ago)';
-    if (difference < 7) return '(in $difference days)';
-    if (difference < 30) return '(in ${(difference / 7).floor()} weeks)';
-    return '(in ${(difference / 30).floor()} months)';
+    if (difference < 0) return '(${-difference}d ago)';
+    if (difference < 7) return '(in ${difference}d)';
+    if (difference < 30) return '(in ${(difference / 7).floor()}w)';
+    return '(in ${(difference / 30).floor()}mo)';
   }
 }

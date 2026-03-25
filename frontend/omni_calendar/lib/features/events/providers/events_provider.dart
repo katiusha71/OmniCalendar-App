@@ -1,10 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../core/constants/api_constants.dart';
-import '../../../core/services/api_service.dart';
+import '../../../core/services/database_service.dart';
 import '../../../models/event.dart';
 
 final eventsProvider = StateNotifierProvider<EventsNotifier, EventsState>((ref) {
-  return EventsNotifier(ref.watch(apiServiceProvider));
+  return EventsNotifier();
 });
 
 class EventsState {
@@ -32,21 +31,15 @@ class EventsState {
 }
 
 class EventsNotifier extends StateNotifier<EventsState> {
-  final ApiService _api;
+  final DatabaseService _db = DatabaseService();
 
-  EventsNotifier(this._api) : super(EventsState());
+  EventsNotifier() : super(EventsState());
 
   Future<void> loadEvents() async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final response = await _api.get(ApiConstants.events);
-      if (response.data['success'] == true) {
-        final List<dynamic> data = response.data['data'];
-        final events = data.map((e) => Event.fromJson(e)).toList();
-        state = state.copyWith(isLoading: false, events: events);
-      } else {
-        throw Exception(response.data['message']);
-      }
+      final events = await _db.getAllEvents();
+      state = state.copyWith(isLoading: false, events: events);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -55,17 +48,8 @@ class EventsNotifier extends StateNotifier<EventsState> {
   Future<void> loadUpcomingEvents({int days = 30}) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final response = await _api.get(
-        ApiConstants.upcomingEvents,
-        queryParameters: {'days': days},
-      );
-      if (response.data['success'] == true) {
-        final List<dynamic> data = response.data['data'];
-        final events = data.map((e) => Event.fromJson(e)).toList();
-        state = state.copyWith(isLoading: false, events: events);
-      } else {
-        throw Exception(response.data['message']);
-      }
+      final events = await _db.getUpcomingEvents(days: days);
+      state = state.copyWith(isLoading: false, events: events);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
@@ -74,16 +58,9 @@ class EventsNotifier extends StateNotifier<EventsState> {
   Future<bool> createEvent(Event event) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final response = await _api.post(
-        ApiConstants.events,
-        data: event.toJson(),
-      );
-      if (response.data['success'] == true) {
-        await loadEvents();
-        return true;
-      } else {
-        throw Exception(response.data['message']);
-      }
+      await _db.insertEvent(event);
+      await loadEvents();
+      return true;
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       return false;
@@ -93,16 +70,9 @@ class EventsNotifier extends StateNotifier<EventsState> {
   Future<bool> updateEvent(int id, Event event) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final response = await _api.put(
-        '${ApiConstants.events}/$id',
-        data: event.toJson(),
-      );
-      if (response.data['success'] == true) {
-        await loadEvents();
-        return true;
-      } else {
-        throw Exception(response.data['message']);
-      }
+      await _db.updateEvent(id, event);
+      await loadEvents();
+      return true;
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       return false;
@@ -112,13 +82,9 @@ class EventsNotifier extends StateNotifier<EventsState> {
   Future<bool> deleteEvent(int id) async {
     state = state.copyWith(isLoading: true, error: null);
     try {
-      final response = await _api.delete('${ApiConstants.events}/$id');
-      if (response.data['success'] == true) {
-        await loadEvents();
-        return true;
-      } else {
-        throw Exception(response.data['message']);
-      }
+      await _db.deleteEvent(id);
+      await loadEvents();
+      return true;
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
       return false;

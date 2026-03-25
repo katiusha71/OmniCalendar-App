@@ -5,13 +5,17 @@ class AppTheme {
   static const Color secondaryColor = Color(0xFF625B71);
   static const Color tertiaryColor = Color(0xFF7D5260);
 
-  static ThemeData get lightTheme {
+  static const String _farsiFontFamily = 'Vazirmatn';
+
+  static ThemeData lightTheme([String locale = 'en']) {
+    final isFarsi = locale == 'fa';
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.light,
       ),
+      fontFamily: isFarsi ? _farsiFontFamily : null,
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,
@@ -43,13 +47,15 @@ class AppTheme {
     );
   }
 
-  static ThemeData get darkTheme {
+  static ThemeData darkTheme([String locale = 'en']) {
+    final isFarsi = locale == 'fa';
     return ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
         seedColor: primaryColor,
         brightness: Brightness.dark,
       ),
+      fontFamily: isFarsi ? _farsiFontFamily : null,
       appBarTheme: const AppBarTheme(
         centerTitle: true,
         elevation: 0,

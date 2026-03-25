@@ -1,39 +1,60 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import '../constants/app_constants.dart';
+import 'package:flutter/foundation.dart';
+import 'package:sqflite/sqflite.dart';
 
 class StorageService {
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  static final StorageService _instance = StorageService._internal();
+  factory StorageService() => _instance;
+  StorageService._internal();
 
-  Future<void> saveToken(String token) async {
-    await _storage.write(key: AppConstants.tokenKey, value: token);
+  Database? _prefsDb;
+
+  Future<Database> get _database async {
+    if (_prefsDb != null) return _prefsDb!;
+    final dbPath = await getDatabasesPath();
+    _prefsDb = await openDatabase(
+      '$dbPath/omni_prefs.db',
+      version: 1,
+      onCreate: (db, version) async {
+        await db.execute(
+          'CREATE TABLE prefs (key TEXT PRIMARY KEY, value TEXT)',
+        );
+      },
+    );
+    return _prefsDb!;
   }
 
-  Future<String?> getToken() async {
-    return await _storage.read(key: AppConstants.tokenKey);
+  Future<void> save(String key, String value) async {
+    try {
+      final db = await _database;
+      await db.insert(
+        'prefs',
+        {'key': key, 'value': value},
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
+    } catch (e) {
+      debugPrint('StorageService save error: $e');
+    }
   }
 
-  Future<void> saveRefreshToken(String token) async {
-    await _storage.write(key: AppConstants.refreshTokenKey, value: token);
+  Future<String?> get(String key) async {
+    try {
+      final db = await _database;
+      final result = await db.query('prefs', where: 'key = ?', whereArgs: [key]);
+      if (result.isNotEmpty) {
+        return result.first['value'] as String?;
+      }
+    } catch (e) {
+      debugPrint('StorageService get error: $e');
+    }
+    return null;
   }
 
-  Future<String?> getRefreshToken() async {
-    return await _storage.read(key: AppConstants.refreshTokenKey);
-  }
-
-  Future<void> saveUserData(String userData) async {
-    await _storage.write(key: AppConstants.userKey, value: userData);
-  }
-
-  Future<String?> getUserData() async {
-    return await _storage.read(key: AppConstants.userKey);
-  }
-
-  Future<void> clearAll() async {
-    await _storage.deleteAll();
-  }
-
-  Future<bool> hasToken() async {
-    final token = await getToken();
-    return token != null && token.isNotEmpty;
+  Future<void> remove(String key) async {
+    try {
+      final db = await _database;
+      await db.delete('prefs', where: 'key = ?', whereArgs: [key]);
+    } catch (e) {
+      debugPrint('StorageService remove error: $e');
+    }
   }
 }

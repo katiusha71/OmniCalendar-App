@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/l10n/app_localizations.dart';
+import '../../../core/services/calendar_conversion_service.dart';
 import '../../../models/event.dart';
 import '../providers/events_provider.dart';
 
@@ -20,9 +22,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   final _descriptionController = TextEditingController();
 
   CalendarType _calendarType = CalendarType.gregorian;
+  EventCategory _category = EventCategory.personal;
   int _selectedDay = 1;
   int _selectedMonth = 1;
-  int? _selectedYear;
+  int _selectedYear = DateTime.now().year;
   bool _isAnnualRecurring = true;
   int _notifyDaysBefore = 0;
   TimeOfDay _notifyTime = const TimeOfDay(hour: 9, minute: 0);
@@ -52,9 +55,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
       _titleController.text = event.title;
       _descriptionController.text = event.description ?? '';
       _calendarType = event.calendarType;
+      _category = event.category;
       _selectedDay = event.originalDay;
       _selectedMonth = event.originalMonth;
-      _selectedYear = event.originalYear;
+      _selectedYear = event.originalYear ?? DateTime.now().year;
       _isAnnualRecurring = event.isAnnualRecurring;
       _notifyDaysBefore = event.notifyDaysBefore;
 
@@ -98,6 +102,19 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
     }
   }
 
+  TriCalendarDate? _getConvertedDates() {
+    try {
+      return CalendarConversionService.convertToAll(
+        sourceType: _calendarType,
+        day: _selectedDay,
+        month: _selectedMonth,
+        year: _selectedYear,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _handleSave() async {
     if (!_formKey.currentState!.validate()) return;
 
@@ -109,9 +126,10 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
           ? _descriptionController.text.trim()
           : null,
       calendarType: _calendarType,
+      category: _category,
       originalDay: _selectedDay,
       originalMonth: _selectedMonth,
-      originalYear: _isAnnualRecurring ? null : _selectedYear,
+      originalYear: _selectedYear,
       isAnnualRecurring: _isAnnualRecurring,
       notifyDaysBefore: _notifyDaysBefore,
       notifyTime:
@@ -137,11 +155,12 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = ref.watch(localizationProvider);
     final isEditing = widget.eventId != null;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'Edit Event' : 'New Event'),
+        title: Text(isEditing ? l10n.get('editEvent') : l10n.get('newEvent')),
         actions: [
           TextButton(
             onPressed: _isLoading ? null : _handleSave,
@@ -151,7 +170,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                     height: 20,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Save'),
+                : Text(l10n.get('save')),
           ),
         ],
       ),
@@ -162,14 +181,14 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
           children: [
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
-                labelText: 'Event Title',
-                prefixIcon: Icon(Icons.title),
+              decoration: InputDecoration(
+                labelText: l10n.get('eventTitle'),
+                prefixIcon: const Icon(Icons.title),
               ),
               textCapitalization: TextCapitalization.sentences,
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Please enter a title';
+                  return l10n.get('pleaseEnterTitle');
                 }
                 return null;
               },
@@ -177,9 +196,9 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             const SizedBox(height: 16),
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(
-                labelText: 'Description (optional)',
-                prefixIcon: Icon(Icons.description),
+              decoration: InputDecoration(
+                labelText: l10n.get('description'),
+                prefixIcon: const Icon(Icons.description),
                 alignLabelWithHint: true,
               ),
               textCapitalization: TextCapitalization.sentences,
@@ -187,7 +206,30 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Calendar Type',
+              l10n.get('category'),
+              style: theme.textTheme.titleMedium,
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 4,
+              children: EventCategory.values.map((cat) {
+                final isSelected = _category == cat;
+                return ChoiceChip(
+                  selected: isSelected,
+                  onSelected: (_) => setState(() => _category = cat),
+                  avatar: Icon(cat.icon, size: 18, color: isSelected ? theme.colorScheme.onPrimary : cat.color),
+                  label: Text(l10n.get(cat.value)),
+                  selectedColor: cat.color,
+                  labelStyle: TextStyle(
+                    color: isSelected ? theme.colorScheme.onPrimary : null,
+                  ),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 24),
+            Text(
+              l10n.get('calendarType'),
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -213,7 +255,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             ),
             const SizedBox(height: 24),
             Text(
-              'Date',
+              l10n.get('date'),
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -223,8 +265,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   flex: 2,
                   child: DropdownButtonFormField<int>(
                     value: _selectedDay,
-                    decoration: const InputDecoration(
-                      labelText: 'Day',
+                    decoration: InputDecoration(
+                      labelText: l10n.get('day'),
                     ),
                     items: List.generate(
                       _daysInMonth,
@@ -245,8 +287,8 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
                   flex: 3,
                   child: DropdownButtonFormField<int>(
                     value: _selectedMonth,
-                    decoration: const InputDecoration(
-                      labelText: 'Month',
+                    decoration: InputDecoration(
+                      labelText: l10n.get('month'),
                     ),
                     items: List.generate(
                       12,
@@ -270,65 +312,66 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
               ],
             ),
             const SizedBox(height: 16),
+            _buildCelebrationsPreview(theme, l10n),
+            const SizedBox(height: 16),
+            TextFormField(
+              initialValue: _selectedYear.toString(),
+              decoration: InputDecoration(
+                labelText: l10n.get('year'),
+                prefixIcon: const Icon(Icons.calendar_today),
+                helperText: _isAnnualRecurring
+                    ? l10n.get('usedForConversion')
+                    : null,
+              ),
+              keyboardType: TextInputType.number,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return l10n.get('pleaseEnterYear');
+                }
+                final year = int.tryParse(value);
+                if (year == null || year < 1 || year > 9999) {
+                  return l10n.get('invalidYear');
+                }
+                return null;
+              },
+              onChanged: (value) {
+                final parsed = int.tryParse(value);
+                if (parsed != null) {
+                  setState(() => _selectedYear = parsed);
+                }
+              },
+            ),
+            const SizedBox(height: 8),
             SwitchListTile(
-              title: const Text('Annual Recurring'),
-              subtitle: const Text('Repeat every year on this date'),
+              title: Text(l10n.get('annualRecurring')),
+              subtitle: Text(l10n.get('annualRecurringDesc')),
               value: _isAnnualRecurring,
               onChanged: (value) {
                 setState(() {
                   _isAnnualRecurring = value;
-                  if (!value && _selectedYear == null) {
-                    _selectedYear = DateTime.now().year;
-                  }
                 });
               },
             ),
-            if (!_isAnnualRecurring) ...[
-              const SizedBox(height: 8),
-              TextFormField(
-                initialValue: _selectedYear?.toString() ?? '',
-                decoration: const InputDecoration(
-                  labelText: 'Year',
-                  prefixIcon: Icon(Icons.calendar_today),
-                ),
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (!_isAnnualRecurring) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter a year';
-                    }
-                    final year = int.tryParse(value);
-                    if (year == null || year < 1 || year > 9999) {
-                      return 'Please enter a valid year';
-                    }
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  _selectedYear = int.tryParse(value);
-                },
-              ),
-            ],
             const SizedBox(height: 24),
             Text(
-              'Notification',
+              l10n.get('notification'),
               style: theme.textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
             DropdownButtonFormField<int>(
               value: _notifyDaysBefore,
-              decoration: const InputDecoration(
-                labelText: 'Notify before',
-                prefixIcon: Icon(Icons.notifications_outlined),
+              decoration: InputDecoration(
+                labelText: l10n.get('notifyBefore'),
+                prefixIcon: const Icon(Icons.notifications_outlined),
               ),
-              items: const [
-                DropdownMenuItem(value: 0, child: Text('On the day')),
-                DropdownMenuItem(value: 1, child: Text('1 day before')),
-                DropdownMenuItem(value: 2, child: Text('2 days before')),
-                DropdownMenuItem(value: 3, child: Text('3 days before')),
-                DropdownMenuItem(value: 7, child: Text('1 week before')),
-                DropdownMenuItem(value: 14, child: Text('2 weeks before')),
-                DropdownMenuItem(value: 30, child: Text('1 month before')),
+              items: [
+                DropdownMenuItem(value: 0, child: Text(l10n.get('onTheDay'))),
+                DropdownMenuItem(value: 1, child: Text(l10n.get('dayBefore'))),
+                DropdownMenuItem(value: 2, child: Text(l10n.get('daysBefore2'))),
+                DropdownMenuItem(value: 3, child: Text(l10n.get('daysBefore3'))),
+                DropdownMenuItem(value: 7, child: Text(l10n.get('weekBefore'))),
+                DropdownMenuItem(value: 14, child: Text(l10n.get('weeksBefore2'))),
+                DropdownMenuItem(value: 30, child: Text(l10n.get('monthBefore'))),
               ],
               onChanged: (value) {
                 if (value != null) {
@@ -339,7 +382,7 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
             const SizedBox(height: 16),
             ListTile(
               leading: const Icon(Icons.access_time),
-              title: const Text('Notification Time'),
+              title: Text(l10n.get('notificationTime')),
               subtitle: Text(_notifyTime.format(context)),
               trailing: const Icon(Icons.chevron_right),
               onTap: () async {
@@ -356,6 +399,131 @@ class _AddEventScreenState extends ConsumerState<AddEventScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCelebrationsPreview(ThemeData theme, AppLocalizations l10n) {
+    final tri = _getConvertedDates();
+    if (tri == null) return const SizedBox.shrink();
+
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.4),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: theme.colorScheme.outlineVariant,
+          width: 0.5,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.celebration_outlined,
+                size: 18,
+                color: theme.colorScheme.primary,
+              ),
+              const SizedBox(width: 6),
+              Text(
+                l10n.get('celebrationsInAll'),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: theme.colorScheme.primary,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          _buildPreviewRow(
+            theme, l10n,
+            Icons.calendar_month,
+            const Color(0xFF4285F4),
+            l10n.get('gregorian'),
+            tri.formattedGregorian(),
+            _calendarType == CalendarType.gregorian,
+          ),
+          const SizedBox(height: 6),
+          _buildPreviewRow(
+            theme, l10n,
+            Icons.wb_sunny_outlined,
+            const Color(0xFF34A853),
+            l10n.get('solarHijri'),
+            tri.formattedSolarHijri(),
+            _calendarType == CalendarType.solarHijri,
+          ),
+          const SizedBox(height: 6),
+          _buildPreviewRow(
+            theme, l10n,
+            Icons.nightlight_outlined,
+            const Color(0xFF9C27B0),
+            l10n.get('lunarHijri'),
+            tri.formattedLunarHijri(),
+            _calendarType == CalendarType.lunarHijri,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPreviewRow(
+    ThemeData theme,
+    AppLocalizations l10n,
+    IconData icon,
+    Color color,
+    String label,
+    String date,
+    bool isPrimary,
+  ) {
+    return Row(
+      children: [
+        Container(
+          width: 8,
+          height: 8,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Icon(icon, size: 16, color: color),
+        const SizedBox(width: 6),
+        SizedBox(
+          width: 80,
+          child: Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: color,
+              fontWeight: isPrimary ? FontWeight.w600 : FontWeight.w500,
+            ),
+          ),
+        ),
+        Expanded(
+          child: Text(
+            date,
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: isPrimary ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
+        ),
+        if (isPrimary)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              l10n.get('source'),
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: color,
+                fontSize: 10,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
