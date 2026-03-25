@@ -36,7 +36,7 @@ class OmniCalendarApp extends ConsumerWidget {
       title: 'OmniCalendar',
       theme: AppTheme.lightTheme(settings.locale),
       darkTheme: AppTheme.darkTheme(settings.locale),
-      themeMode: ThemeMode.system,
+      themeMode: settings.themeMode,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
       locale: locale,

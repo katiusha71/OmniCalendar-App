@@ -84,4 +84,9 @@ const Map<String, String> enTranslations = {
   'selectDate': 'Select a date to convert',
   'convertedDates': 'Converted Dates',
   'dayOfWeek': 'Day of Week',
+  'theme': 'Theme',
+  'themeSystem': 'System',
+  'themeSystemDesc': 'Follow device theme',
+  'themeLight': 'Light',
+  'themeDark': 'Dark',
 };

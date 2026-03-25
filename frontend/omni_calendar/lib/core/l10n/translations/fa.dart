@@ -84,4 +84,9 @@ const Map<String, String> faTranslations = {
   'selectDate': 'تاریخی را برای تبدیل انتخاب کنید',
   'convertedDates': 'تاریخ‌های تبدیل شده',
   'dayOfWeek': 'روز هفته',
+  'theme': 'پوسته',
+  'themeSystem': 'سیستم',
+  'themeSystemDesc': 'پیروی از تم دستگاه',
+  'themeLight': 'روشن',
+  'themeDark': 'تاریک',
 };
