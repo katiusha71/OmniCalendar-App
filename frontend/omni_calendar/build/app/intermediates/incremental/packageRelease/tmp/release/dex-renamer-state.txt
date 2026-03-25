@@ -1,0 +1,4 @@
+#Wed Mar 25 15:53:21 NZDT 2026
+base.0=C\:\\Users\\shevc\\OmniCalendar\\frontend\\omni_calendar\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

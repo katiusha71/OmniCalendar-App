@@ -1,0 +1,1 @@
+{"isEntrypoint":false,"deps":["analyzer|lib/file_system/file_system.dart","analyzer|lib/file_system/memory_file_system.dart","analyzer|lib/src/test_utilities/package_config_file_builder.dart","analyzer|lib/src/util/file_paths.dart","path|lib/path.dart"],"parts":[],"conditionalDeps":[],"sdkDeps":["io"],"hasMain":false}

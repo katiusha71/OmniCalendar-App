@@ -1,0 +1,218 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.omni_calendar"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="35" />
+10    <!--
+11         Required to query activities that can process text, see:
+12         https://developer.android.com/training/package-visibility and
+13         https://developer.android.com/reference/android/content/Intent#ACTION_PROCESS_TEXT.
+14
+15         In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin.
+16    -->
+17    <queries>
+17-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:39:5-44:15
+18        <intent>
+18-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:40:9-43:18
+19            <action android:name="android.intent.action.PROCESS_TEXT" />
+19-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:41:13-72
+19-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:41:21-70
+20
+21            <data android:mimeType="text/plain" />
+21-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:42:13-50
+21-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:42:19-48
+22        </intent>
+23    </queries>
+24
+25    <permission
+25-->[androidx.core:core:1.13.1] C:\Users\shevc\.gradle\caches\transforms-4\f997e031758f29103c8fbb69b86472a9\transformed\core-1.13.1\AndroidManifest.xml:22:5-24:47
+26        android:name="com.example.omni_calendar.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+26-->[androidx.core:core:1.13.1] C:\Users\shevc\.gradle\caches\transforms-4\f997e031758f29103c8fbb69b86472a9\transformed\core-1.13.1\AndroidManifest.xml:23:9-81
+27        android:protectionLevel="signature" />
+27-->[androidx.core:core:1.13.1] C:\Users\shevc\.gradle\caches\transforms-4\f997e031758f29103c8fbb69b86472a9\transformed\core-1.13.1\AndroidManifest.xml:24:9-44
+28
+29    <uses-permission android:name="com.example.omni_calendar.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+29-->[androidx.core:core:1.13.1] C:\Users\shevc\.gradle\caches\transforms-4\f997e031758f29103c8fbb69b86472a9\transformed\core-1.13.1\AndroidManifest.xml:26:5-97
+29-->[androidx.core:core:1.13.1] C:\Users\shevc\.gradle\caches\transforms-4\f997e031758f29103c8fbb69b86472a9\transformed\core-1.13.1\AndroidManifest.xml:26:22-94
+30
+31    <application
+32        android:name="android.app.Application"
+32-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:4:9-42
+33        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+33-->[androidx.core:core:1.13.1] C:\Users\shevc\.gradle\caches\transforms-4\f997e031758f29103c8fbb69b86472a9\transformed\core-1.13.1\AndroidManifest.xml:28:18-86
+34        android:extractNativeLibs="true"
+35        android:icon="@mipmap/ic_launcher"
+35-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:5:9-43
+36        android:label="omni_calendar" >
+36-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:3:9-38
+37        <activity
+37-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:6:9-27:20
+38            android:name="com.example.omni_calendar.MainActivity"
+38-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:7:13-41
+39            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+39-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:12:13-163
+40            android:exported="true"
+40-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:8:13-36
+41            android:hardwareAccelerated="true"
+41-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:13:13-47
+42            android:launchMode="singleTop"
+42-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:9:13-43
+43            android:taskAffinity=""
+43-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:10:13-36
+44            android:theme="@style/LaunchTheme"
+44-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:11:13-47
+45            android:windowSoftInputMode="adjustResize" >
+45-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:14:13-55
+46
+47            <!--
+48                 Specifies an Android theme to apply to this Activity as soon as
+49                 the Android process has started. This theme is visible to the user
+50                 while the Flutter UI initializes. After that, this theme continues
+51                 to determine the Window background behind the Flutter UI.
+52            -->
+53            <meta-data
+53-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:19:13-22:17
+54                android:name="io.flutter.embedding.android.NormalTheme"
+54-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:20:15-70
+55                android:resource="@style/NormalTheme" />
+55-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:21:15-52
+56
+57            <intent-filter>
+57-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:23:13-26:29
+58                <action android:name="android.intent.action.MAIN" />
+58-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:24:17-68
+58-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:24:25-66
+59
+60                <category android:name="android.intent.category.LAUNCHER" />
+60-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:25:17-76
+60-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:25:27-74
+61            </intent-filter>
+62        </activity>
+63        <!--
+64             Don't delete the meta-data below.
+65             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+66        -->
+67        <meta-data
+67-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:30:9-32:33
+68            android:name="flutterEmbedding"
+68-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:31:13-44
+69            android:value="2" />
+69-->C:\Users\shevc\OmniCalendar\frontend\omni_calendar\android\app\src\main\AndroidManifest.xml:32:13-30
+70        <!--
+71           Declares a provider which allows us to store files to share in
+72           '.../caches/share_plus' and grant the receiving action access
+73        -->
+74        <provider
+74-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:13:9-21:20
+75            android:name="dev.fluttercommunity.plus.share.ShareFileProvider"
+75-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:14:13-77
+76            android:authorities="com.example.omni_calendar.flutter.share_provider"
+76-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:15:13-74
+77            android:exported="false"
+77-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:16:13-37
+78            android:grantUriPermissions="true" >
+78-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:17:13-47
+79            <meta-data
+79-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:18:13-20:68
+80                android:name="android.support.FILE_PROVIDER_PATHS"
+80-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:19:17-67
+81                android:resource="@xml/flutter_share_file_paths" />
+81-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:20:17-65
+82        </provider>
+83        <!--
+84           This manifest declared broadcast receiver allows us to use an explicit
+85           Intent when creating a PendingItent to be informed of the user's choice
+86        -->
+87        <receiver
+87-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:26:9-32:20
+88            android:name="dev.fluttercommunity.plus.share.SharePlusPendingIntent"
+88-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:27:13-82
+89            android:exported="false" >
+89-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:28:13-37
+90            <intent-filter>
+90-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:29:13-31:29
+91                <action android:name="EXTRA_CHOSEN_COMPONENT" />
+91-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:30:17-65
+91-->[:share_plus] C:\Users\shevc\OmniCalendar\frontend\omni_calendar\build\share_plus\intermediates\merged_manifest\release\processReleaseManifest\AndroidManifest.xml:30:25-62
+92            </intent-filter>
+93        </receiver>
+94
+95        <uses-library
+95-->[androidx.window:window:1.2.0] C:\Users\shevc\.gradle\caches\transforms-4\259542565bfe9b307b6fc6cfbb391895\transformed\jetified-window-1.2.0\AndroidManifest.xml:23:9-25:40
+96            android:name="androidx.window.extensions"
+96-->[androidx.window:window:1.2.0] C:\Users\shevc\.gradle\caches\transforms-4\259542565bfe9b307b6fc6cfbb391895\transformed\jetified-window-1.2.0\AndroidManifest.xml:24:13-54
+97            android:required="false" />
+97-->[androidx.window:window:1.2.0] C:\Users\shevc\.gradle\caches\transforms-4\259542565bfe9b307b6fc6cfbb391895\transformed\jetified-window-1.2.0\AndroidManifest.xml:25:13-37
+98        <uses-library
+98-->[androidx.window:window:1.2.0] C:\Users\shevc\.gradle\caches\transforms-4\259542565bfe9b307b6fc6cfbb391895\transformed\jetified-window-1.2.0\AndroidManifest.xml:26:9-28:40
+99            android:name="androidx.window.sidecar"
+99-->[androidx.window:window:1.2.0] C:\Users\shevc\.gradle\caches\transforms-4\259542565bfe9b307b6fc6cfbb391895\transformed\jetified-window-1.2.0\AndroidManifest.xml:27:13-51
+100            android:required="false" />
+100-->[androidx.window:window:1.2.0] C:\Users\shevc\.gradle\caches\transforms-4\259542565bfe9b307b6fc6cfbb391895\transformed\jetified-window-1.2.0\AndroidManifest.xml:28:13-37
+101
+102        <provider
+102-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:24:9-32:20
+103            android:name="androidx.startup.InitializationProvider"
+103-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:25:13-67
+104            android:authorities="com.example.omni_calendar.androidx-startup"
+104-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:26:13-68
+105            android:exported="false" >
+105-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:27:13-37
+106            <meta-data
+106-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:29:13-31:52
+107                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+107-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:30:17-78
+108                android:value="androidx.startup" />
+108-->[androidx.lifecycle:lifecycle-process:2.7.0] C:\Users\shevc\.gradle\caches\transforms-4\be77e272af763e1b40c011ccf24636be\transformed\jetified-lifecycle-process-2.7.0\AndroidManifest.xml:31:17-49
+109            <meta-data
+109-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:29:13-31:52
+110                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+110-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:30:17-85
+111                android:value="androidx.startup" />
+111-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:31:17-49
+112        </provider>
+113
+114        <receiver
+114-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:34:9-52:20
+115            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+115-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:35:13-76
+116            android:directBootAware="false"
+116-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:36:13-44
+117            android:enabled="true"
+117-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:37:13-35
+118            android:exported="true"
+118-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:38:13-36
+119            android:permission="android.permission.DUMP" >
+119-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:39:13-57
+120            <intent-filter>
+120-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:40:13-42:29
+121                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:17-91
+121-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:41:25-88
+122            </intent-filter>
+123            <intent-filter>
+123-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:43:13-45:29
+124                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:17-85
+124-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:44:25-82
+125            </intent-filter>
+126            <intent-filter>
+126-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:46:13-48:29
+127                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+127-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:17-88
+127-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:47:25-85
+128            </intent-filter>
+129            <intent-filter>
+129-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:49:13-51:29
+130                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+130-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:17-95
+130-->[androidx.profileinstaller:profileinstaller:1.3.1] C:\Users\shevc\.gradle\caches\transforms-4\1d27f43d72f127c240bcd791ae0cf3a0\transformed\jetified-profileinstaller-1.3.1\AndroidManifest.xml:50:25-92
+131            </intent-filter>
+132        </receiver>
+133    </application>
+134
+135</manifest>
